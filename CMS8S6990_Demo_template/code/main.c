@@ -34,6 +34,7 @@
 *****************************************************************************/
 #include "cms8s6990.h"
 #include "demo_uart.h"
+#include "stdio.h"
 
 /****************************************************************************/
 /*	Local pre-processor symbols('#define')
@@ -73,13 +74,13 @@ uint32_t Systemclock = 24000000;
 int main(void)
 {
 	UART0_Config();
+	printf("CMS8S6990 Test........\n\r");
 
 	while(1)
 	{	
 		;
 	}		
 }
-
 
 
 
