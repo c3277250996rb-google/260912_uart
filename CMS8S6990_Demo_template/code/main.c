@@ -74,7 +74,7 @@ uint32_t Systemclock = 24000000;
 int main(void)
 {
 	UART0_Config();
-	printf("CMS8S6990 Test........\n\r");
+	printf("◊œ‘√\r\n’‰∆Ê\r\n");
 
 	while(1)
 	{	
