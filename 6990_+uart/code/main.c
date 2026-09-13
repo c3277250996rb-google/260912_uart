@@ -1,42 +1,31 @@
 #include "cms8s6990.h"
+#include "system.h"
 #include "my_uart.h"
+#include "my_timer.h"
+#include "stdio.h"
 
 
-uint32_t Systemclock = 24000000;
-volatile uint16_t timer0_ms = 0;
-volatile uint32_t uptime_seconds = 0;
-volatile uint8_t uptime_second_pending = 0;
+uint32_t Systemclock = MY_SYSTEM_CLOCK_HZ;
 
 
 
 int main(void)
-{	
+{
+	SYS_SET_SYSTEM_CLK(SYS_CLK_DIV_1);
 	Timer0_Config();
 	UART0_Config();
 	printf("UART ready\r\n");
 
 	while(1)
 	{	
-		uint8_t print_uptime = 0;
 		uint32_t seconds = 0;
 
-		IRQ_ALL_DISABLE();
-		if(uptime_second_pending)
-		{
-			seconds = uptime_seconds;
-			uptime_second_pending = 0;
-			print_uptime = 1;
-		}
-		IRQ_ALL_ENABLE();
-
-		if(print_uptime)
+		if(Timer0_GetPendingSeconds(&seconds))
 		{
 			printf("Uptime: %lu s\r\n", seconds);
 		}
 	}		
 }
-
-
 
 
 

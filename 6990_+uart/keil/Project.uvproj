@@ -15,7 +15,7 @@
         <TargetCommonOption>
           <Device>CMS8S6990</Device>
           <Vendor>Cmsemicon</Vendor>
-          <Cpu>IRAM(0 - 0xFF) IROM(0-0x3FFF) XRAM(0x0000-0x03FF) CLOCK(24000000) MODDP2 </Cpu>
+          <Cpu>IRAM(0 - 0xFF) IROM(0-0x3FFF) XRAM(0x0000-0x03FF) CLOCK(48000000) MODDP2 </Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile>"LIB\STARTUP_CMS8S6990.A51" ("8051 Startup Code")</StartupFile>
           <FlashDriverDll></FlashDriverDll>
@@ -163,7 +163,7 @@
             <PeripheralDll></PeripheralDll>
             <PeripheralDllArguments></PeripheralDllArguments>
             <InitializationFile></InitializationFile>
-            <Driver>BIN\cms_51.dll</Driver>
+            <Driver>BIN\cms51.dll</Driver>
           </TargetDlls>
         </DebugOption>
         <Utilities>
@@ -485,6 +485,16 @@
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\code\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>my_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\code\my_timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>my_uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\code\my_uart.c</FilePath>
             </File>
           </Files>
         </Group>

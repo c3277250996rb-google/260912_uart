@@ -1,9 +1,8 @@
-#include "demo_uart.h"
+#include "my_uart.h"
 
 void UART0_Config(void)
 {
 	uint16_t BRTValue = 0;
-	uint32_t BaudRateValue = 9600;
 
 	UART_ConfigRunMode(UART0, UART_MOD_ASY_8BIT, UART_BAUD_BRT);
 	UART_EnableReceive(UART0);
@@ -11,20 +10,33 @@ void UART0_Config(void)
 	UART_EnableDoubleFrequency(UART0);
 
 #ifdef USE_FORMULA
-	BRTValue = UART_ConfigBaudRate(UART0, BaudRateValue);
+	BRTValue = UART_ConfigBaudRate(UART0, MY_UART_BAUD_RATE);
 #else
-	BRTValue = 65380;
+	BRTValue = MY_UART_BRT_PERIOD;
 #endif
 
 	UART_ConfigBRTPeriod(BRTValue);
 	UART_EnableBRT();
 
-	GPIO_SET_MUX_MODE(P24CFG, GPIO_MUX_TXD0);
-	GPIO_SET_MUX_MODE(P25CFG, GPIO_MUX_RXD0);
+	GPIO_SET_MUX_MODE(MY_UART_TX_PIN, GPIO_MUX_TXD0);
+	GPIO_SET_MUX_MODE(MY_UART_RX_PIN, GPIO_MUX_RXD0);
 
 	UART_EnableInt(UART0);
 	IRQ_SET_PRIORITY(IRQ_UART0, IRQ_PRIORITY_LOW);
 	IRQ_ALL_ENABLE();
+}
+
+void UART0_IRQHandler_Task(void)
+{
+	if(UART_GetSendIntFlag(UART0))
+	{
+		UART_ClearSendIntFlag(UART0);
+	}
+	if(UART_GetReceiveIntFlag(UART0))
+	{
+		UART_SendBuff(UART0, UART_GetBuff(UART0));
+		UART_ClearReceiveIntFlag(UART0);
+	}
 }
 
 char putchar(char ch)
