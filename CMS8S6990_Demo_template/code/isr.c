@@ -33,6 +33,7 @@
 /*	include files
 *****************************************************************************/
 #include "cms8s6990.h"
+#include "timer.h"
 
 /****************************************************************************/
 /*	Local pre-processor symbols('#define')
@@ -41,6 +42,9 @@
 /****************************************************************************/
 /*	Global variable definitions(declared in header file with 'extern')
 ****************************************************************************/
+extern volatile uint16_t timer0_ms;
+extern volatile uint32_t uptime_seconds;
+extern volatile uint8_t uptime_second_pending;
 
 /****************************************************************************/
 /*	Local type definitions('typedef')
@@ -81,7 +85,15 @@ void INT0_IRQHandler(void)  interrupt INT0_VECTOR
 ******************************************************************************/
 void Timer0_IRQHandler(void)  interrupt TMR0_VECTOR 
 {
+	TMR0_SET_PERIOD(0xF8, 0x30);
+	TF0 = 0;
 
+	if(++timer0_ms >= 1000)
+	{
+		timer0_ms = 0;
+		++uptime_seconds;
+		uptime_second_pending = 1;
+	}
 }
 /******************************************************************************
  ** \brief	 INT0 interrupt service function
@@ -302,7 +314,6 @@ void SPI_IRQHandler(void)  interrupt SPI_VECTOR
 {
 	;
 }
-
 
 
 

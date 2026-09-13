@@ -163,7 +163,7 @@
             <PeripheralDll></PeripheralDll>
             <PeripheralDllArguments></PeripheralDllArguments>
             <InitializationFile></InitializationFile>
-            <Driver>BIN\cms_51.dll</Driver>
+            <Driver>BIN\cms51.dll</Driver>
           </TargetDlls>
         </DebugOption>
         <Utilities>

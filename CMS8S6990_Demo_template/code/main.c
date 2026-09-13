@@ -34,6 +34,7 @@
 *****************************************************************************/
 #include "cms8s6990.h"
 #include "demo_uart.h"
+#include "timer.h"
 #include "stdio.h"
 
 /****************************************************************************/
@@ -53,6 +54,9 @@
 /*	Local variable  definitions('static')
 *****************************************************************************/
 uint32_t Systemclock = 24000000;
+volatile uint16_t timer0_ms = 0;
+volatile uint32_t uptime_seconds = 0;
+volatile uint8_t uptime_second_pending = 0;
 
 /****************************************************************************/
 /*	Local function prototypes('static')
@@ -62,6 +66,18 @@ uint32_t Systemclock = 24000000;
 /****************************************************************************/
 /*	Function implementation - global ('extern') and local('static')
 *****************************************************************************/
+
+static void Timer0_Config(void)
+{
+	/* 24 MHz / 12 = 2 MHz; 2000 counts produce a 1 ms interrupt. */
+	TMR_ConfigRunMode(TMR0, TMR_MODE_TIMING, TMR_TIM_16BIT);
+	TMR_ConfigTimerClk(TMR0, TMR_CLK_DIV_12);
+	TMR_ConfigTimerPeriod(TMR0, 0xF8, 0x30);
+	TMR_ClearOverflowIntFlag(TMR0);
+	TMR_EnableOverflowInt(TMR0);
+	IRQ_SET_PRIORITY(IRQ_TMR0, IRQ_PRIORITY_LOW);
+	TMR_Start(TMR0);
+}
 
 /*****************************************************************************
  ** \brief	 main
@@ -73,16 +89,30 @@ uint32_t Systemclock = 24000000;
 
 int main(void)
 {
+	Timer0_Config();
 	UART0_Config();
-	printf("◊œ‘√\r\n’‰∆Ê\r\n");
+	printf("UART ready\r\n");
 
 	while(1)
 	{	
-		;
+		uint8_t print_uptime = 0;
+		uint32_t seconds = 0;
+
+		IRQ_ALL_DISABLE();
+		if(uptime_second_pending)
+		{
+			seconds = uptime_seconds;
+			uptime_second_pending = 0;
+			print_uptime = 1;
+		}
+		IRQ_ALL_ENABLE();
+
+		if(print_uptime)
+		{
+			printf("Uptime: %lu s\r\n", seconds);
+		}
 	}		
 }
-
-
 
 
 
