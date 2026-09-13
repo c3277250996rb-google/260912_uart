@@ -3,6 +3,7 @@
 
 #include "cms8s6990.h"
 
+#if 1	/* UART0 console (base feature). */
 /* UART0 baud rate in bps. */
 #define MY_UART_BAUD_RATE        (9600UL)
 
@@ -20,5 +21,9 @@ void UART0_Config(void);
 
 /* UART0 ISR task: clear TX flag, echo received bytes. */
 void UART0_IRQHandler_Task(void);
+	/* UART0 console */
+
+#endif
+
 
 #endif /* __MY_UART_H__ */

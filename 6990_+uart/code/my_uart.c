@@ -1,5 +1,7 @@
 #include "my_uart.h"
 
+#if 1	/* UART0 console (base feature). */
+
 /*
  * Initialize UART0 as an 8-bit asynchronous port clocked by the dedicated
  * BRT baud rate timer:
@@ -114,3 +116,7 @@ int puts(const char *s)
 
 	return 0;
 }
+
+#endif	/* UART0 console */
+
+

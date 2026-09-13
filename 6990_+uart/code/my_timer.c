@@ -2,6 +2,8 @@
 #include "timer.h"
 #include "stdio.h"
 
+#if 1	/* Timer0 tick and uptime report (base feature). */
+
 /* Millisecond counter, incremented by the Timer0 overflow ISR. */
 static volatile uint16_t timer0_ms;
 
@@ -75,3 +77,7 @@ void Timer0_PrintUptime(void)
 		printf("Uptime: %lu s\r\n", seconds);
 	}
 }
+
+#endif	/* Timer0 tick and uptime report */
+
+

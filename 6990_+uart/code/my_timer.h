@@ -3,6 +3,7 @@
 
 #include "cms8s6990.h"
 
+#if 1	/* Timer0 tick and uptime report (base feature). */
 /* System clock: 48 MHz, divider = 1. */
 #define MY_SYSTEM_CLOCK_HZ       (48000000UL)
 
@@ -33,5 +34,9 @@ uint8_t Timer0_GetPendingSeconds(uint32_t *seconds);
 
 /* Print the uptime once per elapsed second. Call from the main loop. */
 void Timer0_PrintUptime(void);
+	/* Timer0 tick and uptime report */
+
+#endif
+
 
 #endif /* __MY_TIMER_H__ */
