@@ -23,7 +23,7 @@ void UART0_Config(void);
 void UART0_IRQHandler_Task(void);
 	/* UART0 console */
 
-#endif
+#endif	/* UART0 console */
 
 
 #endif /* __MY_UART_H__ */

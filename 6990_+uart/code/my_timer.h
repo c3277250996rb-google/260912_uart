@@ -36,7 +36,7 @@ uint8_t Timer0_GetPendingSeconds(uint32_t *seconds);
 void Timer0_PrintUptime(void);
 	/* Timer0 tick and uptime report */
 
-#endif
+#endif	/* Timer0 tick and uptime report */
 
 
 #endif /* __MY_TIMER_H__ */
