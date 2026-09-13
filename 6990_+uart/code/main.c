@@ -18,12 +18,7 @@ int main(void)
 
 	while(1)
 	{	
-		uint32_t seconds = 0;
-
-		if(Timer0_GetPendingSeconds(&seconds))
-		{
-			printf("Uptime: %lu s\r\n", seconds);
-		}
+		Timer0_PrintUptime();
 	}		
 }
 

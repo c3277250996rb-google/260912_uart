@@ -3,46 +3,22 @@
 
 #include "cms8s6990.h"
 
-/*****************************************************************************/
-/* UART0 配置参数                                                            */
-/*****************************************************************************/
-/**
- ** UART0 通信波特率（bps）
- ** 用于 USE_FORMULA 分支，由 UART_ConfigBaudRate() 自动计算重装值
- */
+/* UART0 baud rate in bps. */
 #define MY_UART_BAUD_RATE        (9600UL)
 
-/**
- ** BRT（波特率定时器）16 位重装初值，写入 BRTH:BRTL
- ** 计算依据：SystemClock = 48MHz，SMOD = 2（倍频使能），BRT 分频 = 1
- **   BRTValue = 65536 - (48MHz * 2) / (32 * 1 * 9600) = 65536 - 312.5 ≈ 65224 = 0xFEC8
- ** 实际重装计数 = 65536 - 65224 = 312，对应波特率 ≈ 9615bps（偏差 +0.16%）
- ** 注意：修改系统时钟或波特率后，此常量必须重新计算
- */
+/* BRT reload value for 48 MHz / 9600 bps with SMOD = 1:
+ * 65536 - (48 MHz * 2) / (32 * 9600) = 0xFEC8 (~9615 bps, +0.16%).
+ * Recalculate when the system clock or baud rate changes. */
 #define MY_UART_BRT_PERIOD       (0xFEC8U)
 
-/* UART0 发送引脚：P2.4，复用为 TXD0 */
+/* TXD0 / RXD0 pin config registers (function is remappable). */
 #define MY_UART_TX_PIN           (P24CFG)
-
-/* UART0 接收引脚：P2.5，复用为 RXD0 */
 #define MY_UART_RX_PIN           (P25CFG)
 
-/*****************************************************************************/
-/* 函数声明                                                                  */
-/*****************************************************************************/
-/**
- ** \brief 初始化 UART0（8 位异步、BRT 波特率、中断收发）
- ** \param 无
- ** \return 无
- */
+/* Initialize UART0: 8-bit async, BRT baud timer, RX interrupt, pin mux. */
 void UART0_Config(void);
 
-/**
- ** \brief UART0 中断处理任务，需在中断服务程序中调用
- **        接收中断时将收到的字节原样回发（echo）
- ** \param 无
- ** \return 无
- */
+/* UART0 ISR task: clear TX flag, echo received bytes. */
 void UART0_IRQHandler_Task(void);
 
 #endif /* __MY_UART_H__ */
